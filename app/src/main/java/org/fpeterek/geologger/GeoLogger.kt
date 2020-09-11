@@ -4,7 +4,6 @@ import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Environment
 import android.util.Log
 import java.io.BufferedWriter
 import java.io.FileWriter
@@ -43,21 +42,20 @@ object GeoLogger {
     private var writer: BufferedWriter? = null
 
     fun enable() {
-        //val file = Environment.getExternalStorageDirectory()?.absolutePath + "/" + filename
         val file = context?.getExternalFilesDir(null)?.absolutePath + "/" + filename
-        Log.i("Funguj", "Writing to $file")
+        Log.i("GeoLogger", "Writing to $file")
         writer = BufferedWriter(FileWriter(file))
     }
 
     fun disable() {
-        Log.i("Funguj", "Logging finished")
+        Log.i("GeoLogger", "Logging finished")
         writer?.flush()
         writer = null
     }
 
     object Listener : LocationListener {
         override fun onLocationChanged(location: Location) {
-            Log.i("Funguj", "Received {${location.latitude}, ${location.longitude}}")
+            Log.i("GeoLogger", "Received {${location.latitude}, ${location.longitude}}")
             writer?.write("${location.latitude};${location.longitude}")
             writer?.newLine()
         }
